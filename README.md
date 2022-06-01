@@ -15,4 +15,4 @@ This includes an original implementation of Akari Asai, Mohammadreza Salehi, Mat
 
 If you have any questions about the paper, please contact Akari Asai (akari[at]cs.washington.edu) or open an issue. 
 
-**Note**: We are improving the code and documentations, as well as adding instructions to download pre-trained checkpoints. Please stay tuned!
+**Note**: We are improving the code and documentations, as well as adding instructions to download pre-trained checkpoints. Please stay tuned! If you need our code & models to reproduce the results now, please feel free to contact Akari. I can share the current code via email. 
