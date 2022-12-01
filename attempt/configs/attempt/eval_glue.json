@@ -17,7 +17,7 @@
     "prefix_dim": 100,
     "max_source_length": 386,
     "learning_rate": 3e-1,
-    "output_dir": "attnpt_source_mt_all_token_glue_mnli_token_cola_included_token_mnli_cola_final/checkpoint-75174_prompt_only",
+    "output_dir": "attempt_mt_glue",
     "per_device_train_batch_size": 32,
     "per_device_eval_batch_size": 32,
     "split_validation_test": true,

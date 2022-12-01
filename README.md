@@ -2,35 +2,26 @@
 
 This includes an original implementation of Akari Asai, Mohammadreza Salehi, Matthew E. Peters, Hannaneh Hajishirzi. "[Parameter-Efficient Multi-task Tuning via Attentional Mixtures of Soft Prompts](https://homes.cs.washington.edu/~akari/papers/attempt_preprint.pdf)". In Proc. of EMNLP. 2022.
 
-```
-@inproceedings{asai2022attempt ,
-  title={Parameter-Efficient Multi-task Tuning via Attentional Mixtures of Soft Prompts},
-  author={ Asai, Akari and Salehi, Mohammadreza, Peters, Matthew E and Hajishirzi, Hannaneh},
-  journal={EMNLP},
-  year={ 2022 }
-}
-```
-
 ![attempt_overview](img/attempt_overview.png)
 
-If you have any questions about the paper, please contact Akari Asai (akari[at]cs.washington.edu) or open an issue. 
-
 *Acknowledgements*: We used the huggingface's [transformers](https://github.com/huggingface/transformers) and [dataset](https://github.com/huggingface/datasets) libraries. 
-The implementations of the baselines are from the [compacter](https://github.com/rabeehk/compacter) repository. Huge thanks to the contributors of those amazing repositories!
+The implementations of the baselines are from the [Compacter](https://github.com/rabeehk/compacter) repository. Huge thanks to the contributors of those amazing repositories!
 
 ## Content
 
 1. [Installation](#installation)
 2. [ATTEMPT](#attempt)
-    - [Source Prompt Training](#source_prompt_tuning)
-    - [Target Prompt Training](#target_prompt_tuning)
-    - [Multi-Task Training](#multi_task_training)
+    - [Source Prompt Training](#source-prompt-training)
+    - [Target Prompt Training](#target-prompt-training-single-task)
+    - [Multi-Task Training](#target-prompt-training-multi-task)
+    - [Evaluation](#evaluation)
 3. [Baselines](#baselines)
-    - [Standard Fine-tuning](#standard-finetuning)
+    - [Standard Fine-tuning](#standard-fine-tuning)
     - [Prompt tuning](#prompt-tuning)
     - [Adapter](#adapter)
     - [BitFit](#bitfit)
-4. [Trained prompts & checkpoints](#trained-checkpoint)
+4. [Trained checkpoints](#trained-checkpoints)
+5. [Citations and Contact](#citation-and-contact)
 
 ## Installation
 please run the command below to install the dependent libraries. 
@@ -65,7 +56,7 @@ rm source_prompts.zip
 cd ..
 ```
 
-We provides source prompts for different size of T5 models (T5-base, large and 3b). Please see more details in the [Trained checkpoints](trained-checkpoints) section. 
+We provides source prompts for different size of T5 models (T5-base, large and 3b). Please see more details in the [Trained checkpoints](#trained-checkpoints) section. 
 
 #### Target Prompt Training (single-task)
 Once you obtain the source prompts, you can run target prompt training. 
@@ -89,6 +80,7 @@ python run_seq2seq.py configs/attempt/multitask_superglue.json
 ```
 
 ### Evaluation
+You can run evaluations by running the [eval_seq2seq.py](attempt/eval_seq2seq.py) script. 
 
 - Run trained model on a single target task
 ```
@@ -144,10 +136,10 @@ python run_seq2seq.py configs/baselines/adapter.json
 ```
 
 ##### Important config parameters 
-- `task_reduction_factor` (`int`): control how much you reduce the number of parameters in Adapters. Bigger number means less parameters to be updated. By default we set `task_reduction_factor` to be 32 as in [Mahabadi et al., (2021)](https://arxiv.org/abs/2106.04647). 
+- `task_reduction_factor` (`int`): control how much you reduce the number of parameters in Adapters. Bigger number means less parameters to be updated. By default we set `task_reduction_factor` to be 32 as in [Mahabadi et al. (2021)](https://arxiv.org/abs/2106.04647). 
 
 ### BitFit
-[BitFiT (Zaken et al., 2022)](https://arxiv.org/abs/2106.10199) only updates the bias terms of the original LM for each task. 
+[BitFit (Zaken et al., 2022)](https://arxiv.org/abs/2106.10199) only updates the bias terms of the original LM for each task. 
 
 ```
 python run_seq2seq.py configs/baselines/bitfit.json
@@ -179,9 +171,34 @@ unzip source_prompts
 ### Pretrained attention weigjts
 
 ```
-https://homes.cs.washington.edu/~akari/models/attempt/attn_pretrain_nlu.zip
-
+wget https://homes.cs.washington.edu/~akari/models/attempt/attn_pretrain_nlu.zip
 ```
 ### Target task embeddings 
 The target task embeddings are available at [google drive](https://drive.google.com/drive/folders/1F8zs1WfEGzIBhjRZf9TFXINIhur4hGjQ?usp=share_link).
 
+For example, you can download and reproduce our paper results by running the following commands. 
+
+- SuperGLUE ATTEMPT-mt (`attempt_mt_superglue.zip`)
+```
+python eval_seq2seq.py configs/attempt/eval_suerglue.json
+```
+
+- GLUE ATTEMPT-mt (`attempt_mt_glue.zip`)
+```
+python eval_seq2seq.py configs/attempt/eval_glue.json
+```
+*Note*: the current `eval_seq2seq.py` script assumes all multiple tasks use the same metrics, so for the tasks using different metrics, you need to run evaluation separately. I'll latter add support for multiple metrics support for an easier evaluation pipeline.
+
+## Citation and Contact 
+If you find this repository helpful, please cite our paper. 
+
+```
+@inproceedings{asai2022attempt ,
+  title={Parameter-Efficient Multi-task Tuning via Attentional Mixtures of Soft Prompts},
+  author={ Asai, Akari and Salehi, Mohammadreza, Peters, Matthew E and Hajishirzi, Hannaneh},
+  journal={EMNLP},
+  year={ 2022 }
+}
+```
+
+If you have any questions about the paper, feel free to contact Akari Asai (akari[at]cs.washington.edu) or open an issue, and mention @AkariAsai
